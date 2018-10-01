@@ -1,2 +1,2 @@
 # WebApi
-REST API, Core,EF,AutoMapper and Tests
+REST API, Core,EF, Tests
