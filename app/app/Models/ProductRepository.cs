@@ -7,21 +7,37 @@ namespace app.Models
 {
     public class ProductRepository : IProductRepostiory
     {
-        public IEnumerable<Product> Products => throw new NotImplementedException();
+        private readonly AppDbContext _appDbContext;
+
+        public ProductRepository(AppDbContext appDbContext)
+        {
+            _appDbContext = appDbContext;
+        }
+
+        public IEnumerable<Product> Products => _appDbContext.Products;
 
         public Product AddProduct(Product product)
         {
-            throw new NotImplementedException();
+            if(product.Id == 0)
+            {
+                _appDbContext.Products.Add(product);
+                _appDbContext.SaveChanges();
+            }
+
+            return product;
         }
 
         public void DeleteProduct(int id)
         {
-            throw new NotImplementedException();
+            Product dbProduct = _appDbContext.Products.FirstOrDefault(p => p.Id == id);
+            if (dbProduct != null)
+            {
+                _appDbContext.Remove(dbProduct);
+                _appDbContext.SaveChanges();
+            }
         }
 
-        public Product UpdateProduct(Product product)
-        {
-            throw new NotImplementedException();
-        }
+        public Product UpdateProduct(Product product) =>
+            AddProduct(product);
     }
 }
